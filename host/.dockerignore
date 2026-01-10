@@ -1,0 +1,26 @@
+# Node / Angular
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-store
+
+# Build output
+dist
+
+# IDE / OS junk
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Tests & coverage
+coverage
+*.spec.ts
+
+# Env files (optional – see note below)
+.env
+.env.*
