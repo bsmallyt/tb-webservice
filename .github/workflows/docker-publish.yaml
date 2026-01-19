@@ -24,4 +24,4 @@ jobs:
           context: ./host
           file: ./host/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tb-front:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tb-web:latest
