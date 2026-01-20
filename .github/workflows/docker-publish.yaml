@@ -25,3 +25,17 @@ jobs:
           file: ./host/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tb-web:latest
+
+      - name: Discord Notification
+        if: success()
+        uses: appleboy/discord-action@v1.2.0
+        with:
+          webhook_url ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: Successful image tb-web:latest
+
+      - name: Discord Failure Notification
+        if: failure()
+        uses: appleboy/discord-action@v1.2.0
+        with:
+          webhook_url ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: Failed image tb-web:latest
