@@ -19,7 +19,7 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN npx ionic build --prod
+RUN npx ng build --configuration production
 
 
 #######################################
