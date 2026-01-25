@@ -10,13 +10,13 @@ FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
 
 # Copy dependency files first
-COPY package*.json ./
+COPY ./trulyben/package*.json ./
 
 # Clean install
 RUN npm ci
 
 # Copy source files
-COPY . .
+COPY ./trulyben .
 
 # Build the app
 RUN npx ng build --configuration production
