@@ -19,7 +19,7 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN npm run build -- --configuration production
+RUN ionic build --prod
 
 
 #######################################
@@ -35,7 +35,7 @@ USER nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy built server
-COPY --chown=nginx:nginx --from=builder /app/dist/${PROJECT_NAME}/browser /usr/share/nginx/html
+COPY --chown=nginx:nginx --from=builder /app/www /usr/share/nginx/html
 
 EXPOSE 8080
 
