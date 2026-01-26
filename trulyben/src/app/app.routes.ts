@@ -7,10 +7,6 @@ export const routes: Routes = [
     loadComponent: () => import('./components/home/home.page').then((m) => m.HomePage),
   },
   {
-    path: 'login',
-    loadComponent: () => import('./components/login/login.component').then((m) => m.LoginComponent)
-  },
-  {
     path: 'test',
     loadComponent: () => import('./components/test/test.component').then((m) => m.TestComponent),
     canActivate: [canActivateAuth],

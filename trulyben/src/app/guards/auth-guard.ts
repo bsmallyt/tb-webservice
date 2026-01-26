@@ -9,16 +9,16 @@ const isAccessAllowed = async (
 ): Promise<boolean | UrlTree> => {
   const { authenticated, grantedRoles } = authData;
 
-  if (!authenticated) return inject(Router).parseUrl('/login');
+  const requiredRole = route.data['role'];
+  if (!requiredRole) return false;
 
-  const requiredRole = route.data['role'] as string;
+  const hasRequiredRole = (role: string): boolean => 
+    Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
 
-  if (!requiredRole) return true;
+  if (authenticated && hasRequiredRole(requiredRole)) return true;
 
-  const hasRole = Object.values(grantedRoles.resourceRoles)
-    .some(roles => roles.includes(requiredRole));
-
-  return hasRole ? true : inject(Router).parseUrl('/login');
+  const router = inject(Router);
+  return router.parseUrl('/home');
 };
 
 export const canActivateAuth = createAuthGuard(isAccessAllowed);
