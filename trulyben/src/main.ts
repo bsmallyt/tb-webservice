@@ -29,7 +29,6 @@ const initializeApp = async () => {
         initOptions: {
           ...initOptions,
           silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
-          redirectUri: window.location.origin + '/'
         },
         features: [
           withAutoRefreshToken({
