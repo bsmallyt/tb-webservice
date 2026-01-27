@@ -14,6 +14,6 @@ export class HomePage {
   constructor() {}
 
   login() {
-    this.keycloak.login();
+    this.keycloak.login({ prompt: 'login' });
   }
 }
