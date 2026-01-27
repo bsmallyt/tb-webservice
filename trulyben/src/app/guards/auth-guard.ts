@@ -18,7 +18,7 @@ const isAccessAllowed = async (
   if (authenticated && hasRequiredRole(requiredRole)) return true;
 
   const router = inject(Router);
-  return router.parseUrl('/home');
+  return router.parseUrl('/*');
 };
 
 export const canActivateAuth = createAuthGuard(isAccessAllowed);
