@@ -17,6 +17,7 @@ import { AppComponent } from './app/app.component';
 
 const initializeApp = async () => {
   const { config, initOptions } = await fetch('/assets/config.json').then(res => res.json());
+  const isMobile = !!(window as any).Capacitor;
 
   await bootstrapApplication(AppComponent, {
     providers: [
@@ -28,7 +29,11 @@ const initializeApp = async () => {
         config,
         initOptions: {
           ...initOptions,
-          silentCheckSsoRedirectUri: window.location.origin + "/assets/silent-check-sso.html",
+          pkceMethod: 'S256',
+          checkLoginIframe: !isMobile,
+          ...(isMobile ? {} : {
+            silentCheckSsoRedirectUri: window.location.origin + "/assets/silent-check-sso.html",
+          })
         },
         features: [
           withAutoRefreshToken({
