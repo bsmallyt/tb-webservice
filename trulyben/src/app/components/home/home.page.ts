@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { isPlatform } from '@ionic/angular/standalone';
+import { ConfigService } from 'src/app/services/config/config';
 import Keycloak from 'keycloak-js';
 
 @Component({
@@ -12,16 +13,19 @@ import Keycloak from 'keycloak-js';
 })
 export class HomePage {
   private keycloak = inject(Keycloak);
+  private configService = inject(ConfigService);
 
   constructor() {}
 
   async login() {
+    const redirectUri = this.configService.getConfig().env.url;
+
     if (isPlatform('hybrid')) {
       await Browser.open({
-        url: await this.keycloak.createLoginUrl(),
+        url: await this.keycloak.createLoginUrl({ redirectUri: redirectUri }),
       })
     } else {
-      this.keycloak.login({});
+      this.keycloak.login({ redirectUri: redirectUri });
     }
   }
 }

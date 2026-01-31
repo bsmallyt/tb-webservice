@@ -11,12 +11,17 @@ import {
   UserActivityService
 } from 'keycloak-angular';
 
+import { ConfigService } from './app/services/config/config';
+
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { inject } from '@angular/core';
 
 
 const initializeApp = async () => {
-  const { config, initOptions } = await fetch('/assets/config.json').then(res => res.json());
+  const configService = inject(ConfigService);
+  const { env, config, initOptions } = await fetch('/assets/config.json').then(res => res.json());
+  configService.setConfig({env});
   const isMobile = !!(window as any).Capacitor;
 
   await bootstrapApplication(AppComponent, {
@@ -32,7 +37,7 @@ const initializeApp = async () => {
           pkceMethod: 'S256',
           checkLoginIframe: !isMobile,
           ...(isMobile ? {} : {
-            silentCheckSsoRedirectUri: window.location.origin + "/assets/silent-check-sso.html",
+            silentCheckSsoRedirectUri: env.url + "/assets/silent-check-sso.html",
           })
         },
         features: [
