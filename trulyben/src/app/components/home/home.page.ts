@@ -21,7 +21,7 @@ export class HomePage {
     const redirectUri = this.configService.getConfig().env.url;
 
     console.log("redirectUri: " + redirectUri);
-    console.log("configService.getConfig: " + this.configService.getConfig);
+    console.log("configService.getConfig: " + this.configService.getConfig());
 
     if (isPlatform('hybrid')) {
       await Browser.open({
