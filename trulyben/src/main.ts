@@ -20,7 +20,7 @@ import { KeycloakConfig } from 'keycloak-js';
 
 
 const initializeApp = async () => {
-  const { env, config, initOptions } = await fetch('/assets/config.json').then(res => res.json());
+  const cfg = await fetch('/assets/config.json').then(res => res.json());
   const isMobile = !!(window as any).Capacitor;
 
   await bootstrapApplication(AppComponent, {
@@ -29,24 +29,23 @@ const initializeApp = async () => {
       provideIonicAngular(),
       provideRouter(routes, withPreloading(PreloadAllModules)),
 
-      ConfigService,
       {
-        provide: 'APP_INIT_CONFIG',
+        provide: ConfigService,
         useFactory: async () => { 
-          const configService = inject(ConfigService);
-          const cfg = await fetch('/assets/config.json').then(res => res.json());
-          configService.setConfig(cfg);
+          const service = new ConfigService;
+          service.setConfig(cfg);
+          return service;
         }
       },
 
       provideKeycloak({
-        config: config,
+        config: cfg.config,
         initOptions: {
-          ...initOptions,
+          ...cfg.initOptions,
           pkceMethod: 'S256',
           checkLoginIframe: !isMobile,
           ...(isMobile ? {} : {
-            silentCheckSsoRedirectUri: env.url + "/assets/silent-check-sso.html",
+            silentCheckSsoRedirectUri: cfg.env.url + "/assets/silent-check-sso.html",
           })
         },
         features: [
