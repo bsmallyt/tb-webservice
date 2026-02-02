@@ -34,12 +34,18 @@ const initializeApp = async () => {
       provideKeycloak({
         config: cfg.config,
         initOptions: {
-          ...cfg.initOptions,
           pkceMethod: 'S256',
-          checkLoginIframe: !isMobile,
-          ...(isMobile ? {} : {
-            silentCheckSsoRedirectUri: cfg.env.url + "/assets/kc-sso.html",
-          })
+          ...(isMobile
+            ? {
+              onLoad: 'login-required',
+              checkLoginIframe: false
+            }
+            : {
+              onLoad: 'check-sso',
+              checkLoginIframe: true,
+              silentCheckSsoRedirectUri: cfg.env.url + "/assets/kc-sso.html",
+            }
+          )
         },
         features: [
           withAutoRefreshToken({
