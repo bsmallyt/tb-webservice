@@ -18,7 +18,7 @@ export class HomePage {
   constructor() {}
 
   async login() {
-    const redirectUri = this.configService.getConfig().env.url;
+    const redirectUri = this.configService.env.url;
 
     console.log("redirectUri: " + redirectUri);
 

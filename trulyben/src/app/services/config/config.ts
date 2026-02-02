@@ -22,4 +22,11 @@ export class ConfigService {
     }
     return this._config;
   }
+
+  get env(): AppConfig['env'] {
+    if (!this._config) {
+      throw new Error("Config not loaded");
+    }
+    return this._config.env;
+  }
 }
