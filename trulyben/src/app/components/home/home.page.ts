@@ -18,10 +18,7 @@ export class HomePage {
   constructor() {}
 
   async login() {
-    const test = this.configService.env.url;
     const redirectUri = this.configService.env.url;
-
-    console.log("test: " + test);
 
     if (isPlatform('hybrid')) {
       await Browser.open({

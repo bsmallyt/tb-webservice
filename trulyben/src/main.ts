@@ -38,7 +38,7 @@ const initializeApp = async () => {
           pkceMethod: 'S256',
           checkLoginIframe: !isMobile,
           ...(isMobile ? {} : {
-            silentCheckSsoRedirectUri: cfg.env.url + "/assets/silent-check-sso.html",
+            silentCheckSsoRedirectUri: cfg.env.url + "/assets/kc-sso.html",
           })
         },
         features: [
