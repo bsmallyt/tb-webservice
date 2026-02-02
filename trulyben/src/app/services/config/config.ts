@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 export interface AppConfig {
   env: { 
     url: string 
-  }
+  };
+  [key: string]: any;
 }
 
 @Injectable({
@@ -16,7 +17,7 @@ export class ConfigService {
     this._config = config;
   }
 
-  getConfig(): AppConfig {
+  get config(): AppConfig {
     if (!this._config) {
       throw new Error("Config not loaded");
     }

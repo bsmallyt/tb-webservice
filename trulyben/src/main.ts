@@ -15,12 +15,12 @@ import { ConfigService } from './app/services/config/config';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import { inject } from '@angular/core';
-import { KeycloakConfig } from 'keycloak-js';
 
 
 const initializeApp = async () => {
   const cfg = await fetch('/assets/config.json').then(res => res.json());
+  const configService = new ConfigService();
+  configService.setConfig(cfg);
   const isMobile = !!(window as any).Capacitor;
 
   await bootstrapApplication(AppComponent, {
@@ -29,14 +29,7 @@ const initializeApp = async () => {
       provideIonicAngular(),
       provideRouter(routes, withPreloading(PreloadAllModules)),
 
-      {
-        provide: ConfigService,
-        useFactory: async () => { 
-          const service = new ConfigService;
-          service.setConfig(cfg);
-          return service;
-        }
-      },
+      { provide: ConfigService, useValue: configService },
 
       provideKeycloak({
         config: cfg.config,
