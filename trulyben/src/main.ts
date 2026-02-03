@@ -23,6 +23,13 @@ const initializeApp = async () => {
   configService.setConfig(cfg);
   const isMobile = !!(window as any).Capacitor;
 
+  const keycloakFeatures = isMobile ? [] : [
+    withAutoRefreshToken({
+      onInactivityTimeout: 'logout',
+      sessionTimeout: 60_000
+    })
+  ];
+
   await bootstrapApplication(AppComponent, {
     providers: [
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -47,12 +54,7 @@ const initializeApp = async () => {
             }
           )
         },
-        features: [
-          withAutoRefreshToken({
-            onInactivityTimeout: 'logout',
-            sessionTimeout: 60_000
-          })
-        ],
+        features: keycloakFeatures,
         providers: [AutoRefreshTokenService, UserActivityService]
       }),
 
