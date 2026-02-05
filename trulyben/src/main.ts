@@ -52,7 +52,7 @@ const initializeApp = async () => {
             }
             : {
               onLoad: 'check-sso',
-              checkLoginIframe: false,
+              checkLoginIframe: true,
               silentCheckSsoRedirectUri: cfg.env.url + "/assets/kc-sso.html",
             }
           )
