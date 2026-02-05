@@ -21,9 +21,12 @@ const initializeApp = async () => {
   const cfg = await fetch('/assets/config.json').then(res => res.json());
   const configService = new ConfigService();
   configService.setConfig(cfg);
-  const isMobile = !!(window as any).Capacitor;
 
-  const keycloakFeatures = isMobile ? [] : [
+  const isCapacitor = !!(window as any).Capacitor && (window as any).Capacitor.isNativePlatform?.();
+  const isMobileBrowser = !isCapacitor && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const useCheck = isCapacitor || isMobileBrowser;
+
+  const keycloakFeatures = useCheck ? [] : [
     withAutoRefreshToken({
       onInactivityTimeout: 'logout',
       sessionTimeout: 60_000
@@ -42,7 +45,7 @@ const initializeApp = async () => {
         config: cfg.config,
         initOptions: {
           pkceMethod: 'S256',
-          ...(isMobile
+          ...(useCheck
             ? {
               onLoad: 'login-required',
               checkLoginIframe: false
