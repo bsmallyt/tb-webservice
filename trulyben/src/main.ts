@@ -47,13 +47,12 @@ const initializeApp = async () => {
           pkceMethod: 'S256',
           ...(useCheck
             ? {
-              onLoad: 'login-required',
+              onLoad: 'check-sso',
               checkLoginIframe: false
             }
             : {
               onLoad: 'check-sso',
-              checkLoginIframe: true,
-              silentCheckSsoRedirectUri: cfg.env.url + "/assets/kc-sso.html",
+              checkLoginIframe: false,
             }
           )
         },
