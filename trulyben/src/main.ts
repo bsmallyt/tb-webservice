@@ -42,7 +42,8 @@ const initializeApp = async () => {
         initOptions: {
           pkceMethod: 'S256',
           onLoad: 'check-sso',
-          checkLoginIframe: false
+          checkLoginIframe: false,
+          redirectUri: configService.env.url
         },
         features: keycloakFeatures,
         providers: [AutoRefreshTokenService, UserActivityService]
