@@ -11,23 +11,16 @@ import {
   UserActivityService
 } from 'keycloak-angular';
 
-import { ConfigService } from './app/services/config/config';
-
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-
+import { Capacitor } from '@capacitor/core';
+import { environment } from './environments/environment';
 
 const initializeApp = async () => {
-  const cfg = await fetch('/assets/config.json').then(res => res.json());
-  const configService = new ConfigService();
-  configService.setConfig(cfg);
-
-  const keycloakFeatures = [
-    withAutoRefreshToken({
-      onInactivityTimeout: 'logout',
-      sessionTimeout: 60_000
-    })
-  ];
+  const isNative = Capacitor.isNativePlatform();
+  const redirectUri = isNative 
+    ? 'com.trulyben.app://callback' 
+    : environment.web_url;
 
   await bootstrapApplication(AppComponent, {
     providers: [
@@ -35,17 +28,24 @@ const initializeApp = async () => {
       provideIonicAngular(),
       provideRouter(routes, withPreloading(PreloadAllModules)),
 
-      { provide: ConfigService, useValue: configService },
-
       provideKeycloak({
-        config: cfg.config,
+        config: {
+          url: environment.keycloak_url,
+          realm: environment.keycloak_realm,
+          clientId: environment.keycloak_clientid
+        },
         initOptions: {
           pkceMethod: 'S256',
-          onLoad: 'check-sso',
+          redirectUri: redirectUri,
           checkLoginIframe: false,
-          redirectUri: configService.env.url
+          onLoad: undefined
         },
-        features: keycloakFeatures,
+        features: [
+          withAutoRefreshToken({
+            onInactivityTimeout: 'logout',
+            sessionTimeout: 300_000
+          })
+        ],
         providers: [AutoRefreshTokenService, UserActivityService]
       }),
 

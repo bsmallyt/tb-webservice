@@ -19,4 +19,13 @@
   </div>
 
   <button (click)="login()">login</button>
+  <button [routerLink]="['/test']">test</button>
+
+  <div>{{dis}}</div>
+
+  @if (loggedIn) {
+    <div>
+      hello {{username}}!
+    </div> 
+  }
 </ion-content>
